@@ -2,8 +2,8 @@
 
 <phpunit colors="true" strict="true" bootstrap="tests/autoload.php" convertNoticesToExceptions="false">
   <testsuites>
-    <testsuite name="icircle\icoodb">
-      <directory>./tests</directory>
+    <testsuite name="icircle\php-utils">
+      <directory suffix=".php">./tests</directory>
     </testsuite>
   </testsuites>
   <filter>
