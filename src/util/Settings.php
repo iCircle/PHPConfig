@@ -41,7 +41,7 @@ class Settings{
         if(is_string($setting)){
             $settingPaths = explode(".",$setting);
             foreach($settingPaths as $settingPath){
-                if(!isset($settings[$settingPath])){
+                if($settings[$settingPath] !== null && !isset($settings[$settingPath])){
                     throw new \Exception("setting $setting not found in package $package");
                 }
                 $settings = $settings[$settingPath];
