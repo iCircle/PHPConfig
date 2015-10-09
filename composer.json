@@ -30,5 +30,8 @@
     "autoload": {
         "psr-4": {"icircle\\": "src/"}
     },
+    "autoload-dev": {
+        "psr-4": { "icircle\\tests\\": "tests/" }
+    },
     "minimum-stability" : "dev"
 }
