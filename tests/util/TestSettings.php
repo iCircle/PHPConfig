@@ -1,12 +1,13 @@
 <?php
-
-namespace icircle\util;
-
 /**
  * User: Raaghu
  * Date: 25-09-2015
  * Time: AM 11:57
  */
+
+namespace icircle\tests\util;
+
+use icircle\util\Settings;
 
 class TestSettings extends \PHPUnit_Framework_TestCase{
 
