@@ -18,26 +18,45 @@ use Composer\Autoload\ClassLoader;
  */
 class Util{
 
-    static public function setSetting($setting){
+    static public function setSetting($setting,$package = null){
         $classLoaderReflection = new \ReflectionClass(new ClassLoader());
         $vendorDir = dirname(dirname($classLoaderReflection->getFileName()));
         $thisPackageDir = dirname($vendorDir);
 
-        $orignalSettings = file_get_contents($thisPackageDir.'/config.json');
-        $orignalSettings = json_decode($orignalSettings,true);
-        $settings = array_replace_recursive($orignalSettings,$setting);
-
-        $settings = json_encode($settings);
-
-        $composerJson = file_get_contents($thisPackageDir.'/composer.json');
-        $composerJson = json_decode($composerJson,true);
-        $thisPackageName = $composerJson["name"];
-
-        if(!file_exists($vendorDir.'/'.$thisPackageName)){
-            mkdir($vendorDir.'/'.$thisPackageName,0700,true);
+        if($package == null){
+            $composerJson = file_get_contents($thisPackageDir.'/composer.json');
+            $composerJson = json_decode($composerJson,true);
+            $package = $composerJson["name"];
+            $originalSettingsDir = $thisPackageDir;
         }
 
-        file_put_contents($vendorDir.'/'.$thisPackageName.'/config.json',$settings);
+        if(!isset($originalSettingsDir)){
+            $originalSettingsDir = $vendorDir.'/'.$package;
+        }
+
+        $targetSettingsDir   = $vendorDir.'/'.$package;
+
+        if(file_exists($originalSettingsDir.'/config.json.orig')){
+            $originalSettingsStr = file_get_contents($originalSettingsDir.'/config.json.orig');
+        }else{
+            $originalSettingsStr = file_get_contents($originalSettingsDir.'/config.json');
+        }
+
+        $originalSettings = json_decode($originalSettingsStr,true);
+
+        $settings = array_replace_recursive($originalSettings,$setting);
+        $settings = json_encode($settings);
+
+        if(!file_exists($targetSettingsDir)){
+            mkdir($targetSettingsDir,0700,true);
+        }
+
+        //take a backup of original settings
+        if($originalSettingsDir == $targetSettingsDir){
+            file_put_contents($targetSettingsDir.'/config.json.orig',$originalSettingsStr);
+        }
+
+        file_put_contents($targetSettingsDir.'/config.json',$settings);
     }
 
 }
