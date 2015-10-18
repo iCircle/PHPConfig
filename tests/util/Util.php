@@ -18,7 +18,7 @@ use Composer\Autoload\ClassLoader;
  */
 class Util{
 
-    static public function setSetting($setting,$package = null){
+    static public function setSetting($setting,$package = null,$append = true){
         $classLoaderReflection = new \ReflectionClass(new ClassLoader());
         $vendorDir = dirname(dirname($classLoaderReflection->getFileName()));
         $thisPackageDir = dirname($vendorDir);
@@ -36,10 +36,18 @@ class Util{
 
         $targetSettingsDir   = $vendorDir.'/'.$package;
 
-        if(file_exists($originalSettingsDir.'/config.json.orig')){
-            $originalSettingsStr = file_get_contents($originalSettingsDir.'/config.json.orig');
+        if($append){
+            if(file_exists($targetSettingsDir.'/config.json')){
+                $originalSettingsStr = file_get_contents($targetSettingsDir.'/config.json');
+            }else{
+                $originalSettingsStr = file_get_contents($originalSettingsDir.'/config.json');
+            }
         }else{
-            $originalSettingsStr = file_get_contents($originalSettingsDir.'/config.json');
+            if(file_exists($originalSettingsDir.'/config.json.orig')){
+                $originalSettingsStr = file_get_contents($originalSettingsDir.'/config.json.orig');
+            }else{
+                $originalSettingsStr = file_get_contents($originalSettingsDir.'/config.json');
+            }
         }
 
         $originalSettings = json_decode($originalSettingsStr,true);
@@ -52,7 +60,7 @@ class Util{
         }
 
         //take a backup of original settings
-        if($originalSettingsDir == $targetSettingsDir){
+        if($originalSettingsDir == $targetSettingsDir && !file_exists($targetSettingsDir.'/config.json.orig')){
             file_put_contents($targetSettingsDir.'/config.json.orig',$originalSettingsStr);
         }
 
