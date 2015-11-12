@@ -22,7 +22,7 @@ class Settings{
      */
     public static function getSettings($package,$setting = null){
 
-        $settings = Cache::getData("icircle\\utils\\Settings_".$package);
+        $settings = null;//Cache::getData("icircle\\utils\\Settings_".$package);
         if($settings == null){
             $classLoaderReflection = new \ReflectionClass(new ClassLoader());
             $vendorDir = dirname(dirname($classLoaderReflection->getFileName()));
