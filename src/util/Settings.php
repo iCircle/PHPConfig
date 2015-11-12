@@ -27,7 +27,7 @@ class Settings{
             $classLoaderReflection = new \ReflectionClass(new ClassLoader());
             $vendorDir = dirname(dirname($classLoaderReflection->getFileName()));
 
-            $packageConfigFile = $vendorDir.'\\'.$package.'\\config.json';
+            $packageConfigFile = $vendorDir.'/'.$package.'/config.json';
 
             if(!file_exists($packageConfigFile)){
                 throw new \Exception("No configuration found for the package $package");
