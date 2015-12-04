@@ -20,8 +20,8 @@ abstract class Exception extends \Exception{
             $baseDir = dirname(dirname(dirname($classLoaderReflection->getFileName())));
 
             $errorLogFilePath = $baseDir.'/'.$errorLogFile;
-            $filePaths = array_diff(explode("/",dirname($errorLogFilePath)),array("","/","\\"));
-            $curPath = "";
+            $filePaths = array_diff(explode("/",dirname($errorLogFile)),array("","/","\\"));
+            $curPath = $baseDir;
             foreach($filePaths as $filePath){
                 if(!is_dir($curPath."/".$filePath)){
                     chmod($curPath,0777);
